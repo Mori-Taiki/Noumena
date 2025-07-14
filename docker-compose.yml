@@ -1,52 +1,46 @@
-# docker-compose.yml
 version: '3.8'
 services:
-  # 1. フロントエンドサービス (Next.js)
   frontend:
     build:
       context: .
       dockerfile: .devcontainer/frontend.Dockerfile
-    [cite_start]command: sleep infinity # コンテナを起動し続けるためのコマンド [cite: 85]
+    command: sleep infinity
     volumes:
-      - [cite_start]..:/workspace:cached # プロジェクト全体をコンテナの/workspaceにマウント [cite: 85]
+      - .:/workspace:cached
     networks:
       - noumena_net
 
-  # 2. バックエンドサービス (.NET & Python)
   backend:
     build:
       context: .
       dockerfile: .devcontainer/backend.Dockerfile
-    [cite_start]command: sleep infinity [cite: 86]
+    command: sleep infinity
     volumes:
-      - [cite_start]..:/workspace:cached [cite: 86]
+      - .:/workspace:cached
     environment:
-      # これらは後のステップでGitHub Codespaces Secretsから注入されます
-      - [cite_start]NEO4J_URI=${NEO4J_URI} [cite: 86]
-      - [cite_start]NEO4J_USER=${NEO4J_USER} [cite: 86]
-      - [cite_start]NEO4J_PASSWORD=${NEO4J_PASSWORD} [cite: 86]
-      - [cite_start]AZURE_STORAGE_QUEUE_CONNECTION_STRING=${AZURE_STORAGE_QUEUE_CONNECTION_STRING} [cite: 86]
+      - NEO4J_URI=${NEO4J_URI}
+      - NEO4J_USER=${NEO4J_USER}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+      - AZURE_STORAGE_QUEUE_CONNECTION_STRING=${AZURE_STORAGE_QUEUE_CONNECTION_STRING}
     depends_on:
       - database
     networks:
       - noumena_net
 
-  # 3. データベースサービス (Neo4j)
   database:
-    [cite_start]image: neo4j:5 # 公式のNeo4jイメージを使用 [cite: 87]
+    image: neo4j:5
     ports:
-      - [cite_start]"7474:7474" # Neo4j Browser用ポート [cite: 87]
-      - [cite_start]"7687:7687" # Boltプロトコル用ポート [cite: 87]
+      - "7474:7474"
+      - "7687:7687"
     volumes:
-      - [cite_start]neo4j_data:/data # データを永続化するための名前付きボリューム [cite: 87]
+      - neo4j_data:/data
     environment:
-      # 開発用の認証情報。より安全なパスワードに変更することを推奨します。
-      - [cite_start]NEO4J_AUTH=neo4j/password1234 [cite: 87]
+      - NEO4J_AUTH=neo4j/password1234
     networks:
       - noumena_net
 
 volumes:
-  [cite_start]neo4j_data: # Neo4jのデータ永続化用ボリューム [cite: 88]
+  neo4j_data:
 
 networks:
-  [cite_start]noumena_net: # サービス間通信用のカスタムネットワーク [cite: 88]
+  noumena_net:
