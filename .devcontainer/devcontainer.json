@@ -1,0 +1,32 @@
+{
+    "name": "Project: Noumena Dev Environment",
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+    "service": "backend",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-dotnettools.csdevkit",
+                "ms-python.python",
+                "ms-azuretools.vscode-docker",
+                "esbenp.prettier-vscode",
+                "ms-vscode.vscode-node-azure-pack",
+                "GitHub.copilot"
+            ]
+        }
+    },
+    "postCreateCommand": "dotnet restore && pip install -r requirements.txt && cd frontend && npm install",
+    "forwardPorts": [
+        3000,
+        5000,
+        5001,
+        7474,
+        7687
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    },
+    "remoteUser": "root"
+}
