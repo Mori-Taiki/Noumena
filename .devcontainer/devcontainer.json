@@ -17,7 +17,7 @@
             ]
         }
     },
-    "postCreateCommand": "dotnet restore && pip install -r requirements.txt && cd frontend && npm install",
+    "postCreateCommand": ".devcontainer/post-create.sh", 
     "forwardPorts": [
         3000,
         5000,
