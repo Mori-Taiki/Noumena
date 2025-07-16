@@ -1,6 +1,28 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [healthStatus, setHealthStatus] = useState("checking...");
+
+  useEffect(() => {
+    fetch('/api/health')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setHealthStatus(data.status);
+      })
+      .catch(error => {
+        console.error('Error fetching health status:', error);
+        setHealthStatus('error');
+      });
+  }, []);
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -12,6 +34,10 @@ export default function Home() {
           height={38}
           priority
         />
+        <div className="text-center">
+          <p>Backend Health Check Status:</p>
+          <p className="font-bold">{healthStatus}</p>
+        </div>
         <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
