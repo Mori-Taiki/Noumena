@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using backend.Repositories;
 
 namespace backend;
 
@@ -21,6 +22,8 @@ public class Program
             .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAdB2C"));
 
         builder.Services.AddAuthorization();
+
+        builder.Services.AddSingleton<ICharacterRepository, Neo4jCharacterRepository>();
 
         var app = builder.Build();
 
