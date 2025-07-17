@@ -9,9 +9,22 @@ namespace backend;
 
 public class Program
 {
+    private static readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: MyAllowSpecificOrigins,
+                              policy  =>
+                              {
+                                  policy.WithOrigins("http://localhost:3000", "http://127.0.0.1:3000")
+                                        .AllowAnyHeader()
+                                        .AllowAnyMethod();
+                              });
+        });
 
         // Add services to the container.
         builder.Services.AddControllers();
@@ -35,6 +48,8 @@ public class Program
         }
 
         // app.UseHttpsRedirection();
+
+        app.UseCors(MyAllowSpecificOrigins);
 
         app.UseAuthentication();
         app.UseAuthorization();
