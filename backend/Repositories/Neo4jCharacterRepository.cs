@@ -3,6 +3,7 @@ using backend.Models;
 using Neo4j.Driver;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json;
 
 namespace backend.Repositories
 {
@@ -34,9 +35,9 @@ namespace backend.Repositories
                         llm_provider = character.LlmProvider,
                         personality = character.Personality,
                         background = character.Background,
-                        values = character.Values,
-                        emotions = character.Emotions,
-                        desires = character.Desires
+                        values = JsonSerializer.Serialize(character.Values),
+                        emotions = JsonSerializer.Serialize(character.Emotions),
+                        desires = JsonSerializer.Serialize(character.Desires)
                     });
                 });
             }
