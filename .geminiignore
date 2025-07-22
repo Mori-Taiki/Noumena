@@ -1,0 +1,17 @@
+cat > .geminiignore <<'EOF'
+# ビルド生成物
+workspaces/**/bin/
+workspaces/**/obj/
+workspaces/**/node_modules/
+workspaces/**/.next/
+
+# メディアファイル
+**/*.png
+**/*.jpg
+**/*.svg
+**/*.ico
+
+# その他
+*.lock.json
+.DS_Store
+EOF

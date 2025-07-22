@@ -1,0 +1,19 @@
+name: Gemini AI Agent Review
+on:
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  gemini-review:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-gemini/gemini-cli-action@v0
+        with:
+          api-key: ${{ secrets.GEMINI_API_KEY }}
+          prompt-path: GEMINI/prompts/reviewer.md
