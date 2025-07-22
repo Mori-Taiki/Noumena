@@ -7,5 +7,6 @@ namespace backend.Repositories
     public interface ICharacterRepository
     {
         Task CreateCharacterAsync(Character character);
+        Task<Character?> GetCharacterByIdAsync(string id);
     }
 }

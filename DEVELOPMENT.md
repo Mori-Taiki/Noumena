@@ -82,9 +82,7 @@ PDDフェーズ2のコア機能を実装するためのタスクリストです�
 |  | \[Frontend\] Implement UI for user login and registration flow | ユーザーが実際に操作するログイン画面と新規登録画面を実装する。 | frontend, auth | 1-Critical |
 |  | \[Frontend\] Secure API calls with authentication tokens | フロントエンドからバックエンドAPIを呼び出す際に、認証トークンを付与して安全に通信する。 | frontend, auth | 1-Critical |
 | **キャラクター作成・保存** | \[DB\] Finalize and script Neo4j schema for Character nodes | キャラクター情報を格納するNeo4jのデータ構造を確定し、作成スクリプトを準備する。 | database | 1-Critical |
-|  | \[Backend\] Implement POST /api/characters endpoint for creation | 新しいキャラクターを作成するためのバックエンドAPIを実装する。 | backend, feature | 2-High |
 |  | \[Backend\] Implement GET /api/characters/:id endpoint | 特定のキャラクター情報を取得するためのバックエンドAPIを実装する。 | backend, feature | 2-High |
-|  | \[Frontend\] Build character creation form UI | ユーザーがキャラクターを作成するための入力フォーム画面を実装する。 | frontend, feature | 2-High |
 | **.NET → Python連携** | \[Backend\] Implement service for serializing CharacterState to JSON | キャラクターの状態をJSON形式の文字列に変換する処理を実装する。 | backend, architecture | 2-High |
 |  | \[Backend\] Implement logic to enqueue character action triggers | キャラクターの行動を促すメッセージをAzureのキューに送信するロジックを実装する。 | backend, architecture | 2-High |
 | **AIコアエンジン (Python)** | \[Infra\] Provision Azure Function App and Storage Account | AIエンジンを動かすためのAzure Functionと関連するストレージアカウントを準備する。 | infra, ai-engine | 2-High |
@@ -104,4 +102,8 @@ PDDフェーズ2のコア機能を実装するためのタスクリストです�
 
 ## **完了済みタスクリスト**
 
-（現時点ではなし）
+| 機能グループ | 推奨GitHub Issueタイトル | タスクの日本語説明 | ラベル | 優先度 |
+| :---- | :---- | :---- | :---- | :---- |
+| **キャラクター作成・保存** | \[Backend\] Implement POST /api/characters endpoint for creation | 新しいキャラクターを作成するためのバックエンドAPIを実装する。 | backend, feature | 2-High |
+|  | \[Frontend\] Build character creation form UI | ユーザーがキャラクターを作成するための入力フォーム画面を実装する。 | frontend, feature | 2-High |
+

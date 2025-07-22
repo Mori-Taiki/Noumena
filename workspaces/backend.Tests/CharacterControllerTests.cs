@@ -81,4 +81,57 @@ public class CharacterControllerTests : IClassFixture<WebApplicationFactory<Prog
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         mockRepo.Verify(repo => repo.CreateCharacterAsync(It.IsAny<Character>()), Times.Never);
     }
+
+    [Fact]
+    public async Task Get_Character_WithExistingId_ReturnsOk()
+    {
+        // Arrange
+        var characterId = "char-123";
+        var mockRepo = new Mock<ICharacterRepository>();
+        mockRepo.Setup(repo => repo.GetCharacterByIdAsync(characterId))
+            .ReturnsAsync(new Character { Id = characterId, Name = "Gandalf" });
+
+        var client = _factory.WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureTestServices(services =>
+            {
+                services.AddSingleton(mockRepo.Object);
+            });
+        }).CreateClient();
+
+        // Act
+        var response = await client.GetAsync($"/api/characters/{characterId}");
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var json = await response.Content.ReadAsStringAsync();
+        var character = JsonSerializer.Deserialize<Character>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        Assert.NotNull(character);
+        Assert.Equal(characterId, character.Id);
+        Assert.Equal("Gandalf", character.Name);
+    }
+
+    [Fact]
+    public async Task Get_Character_WithNonExistingId_ReturnsNotFound()
+    {
+        // Arrange
+        var characterId = "char-999";
+        var mockRepo = new Mock<ICharacterRepository>();
+        mockRepo.Setup(repo => repo.GetCharacterByIdAsync(characterId))
+            .ReturnsAsync((Character?)null);
+
+        var client = _factory.WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureTestServices(services =>
+            {
+                services.AddSingleton(mockRepo.Object);
+            });
+        }).CreateClient();
+
+        // Act
+        var response = await client.GetAsync($"/api/characters/{characterId}");
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
 }
