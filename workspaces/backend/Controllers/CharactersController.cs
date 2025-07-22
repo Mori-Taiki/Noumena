@@ -27,7 +27,20 @@ namespace backend.Controllers
 
             await _characterRepository.CreateCharacterAsync(character);
 
-            return CreatedAtAction(nameof(CreateCharacter), new { id = character.Id }, character);
+            return CreatedAtAction(nameof(GetCharacterById), new { id = character.Id }, character);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCharacterById(string id)
+        {
+            var character = await _characterRepository.GetCharacterByIdAsync(id);
+
+            if (character == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(character);
         }
     }
 }
