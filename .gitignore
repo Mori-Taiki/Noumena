@@ -58,3 +58,6 @@ workspaces/ai-engine/.venv/
 
 # Python cache files
 **/__pycache__/
+
+# Azure Functions local settings
+workspaces/ai-engine/local.settings.json
