@@ -1,11 +1,12 @@
 import azure.functions as func
 import logging
 import json
+import traceback
 from app.graph.main import app as graph_app
 
 app = func.FunctionApp()
 
-@app.queue_trigger(name="req", queue_name="character-action-queue",
+@app.queue_trigger(arg_name="req", queue_name="character-action-queue",
                   connection="AzureWebJobsStorage")
 def character_action_trigger(req: func.QueueMessage) -> None:
     logging.info('Python queue trigger function processed a queue item.')
@@ -33,3 +34,4 @@ def character_action_trigger(req: func.QueueMessage) -> None:
         logging.error("Error decoding JSON from queue message.")
     except Exception as e:
         logging.error(f"An unexpected error occurred: {e}")
+        logging.error(traceback.format_exc())
