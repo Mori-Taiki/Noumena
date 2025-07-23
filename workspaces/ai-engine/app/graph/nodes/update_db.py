@@ -18,9 +18,21 @@ def update_db_node(state: CharacterState) -> CharacterState:
             for update in updates:
                 command = update.get("command")
                 params = update.get("params")
-                # Here you would have a mapping from command names to Cypher queries
-                # For now, we'll just log the command
-                logging.info(f"Executing command: {command} with params: {params}")
+                if command == "create_post":
+                    character_id = params["character_id"]
+                    content = params["content"]
+                    thought = params["thought"]
+                    meta_snapshot = params["meta_snapshot"]
+                    # Neo4jにPostノードを作成し、Characterと関連付ける
+                    query = (
+                        "MATCH (c:Character {id: $character_id}) "
+                        "CREATE (p:Post {id: randomUUID(), content: $content, thought: $thought, meta_snapshot: $meta_snapshot, created_at: datetime()}) "
+                        "CREATE (c)-[:POSTED]->(p)"
+                    )
+                    tx.run(query, character_id=character_id, content=content, thought=thought, meta_snapshot=meta_snapshot)
+                    logging.info(f"Created post for character {character_id}")
+                else:
+                    logging.warning(f"Unknown command: {command}")
 
     logging.info(f"---UPDATE DB: Successfully updated database for {character_name}---")
     return state

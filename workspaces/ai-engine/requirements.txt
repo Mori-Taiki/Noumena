@@ -1,3 +1,4 @@
 azure-functions
 neo4j
 langgraph
+google-generativeai
