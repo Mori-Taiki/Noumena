@@ -3,12 +3,10 @@ import json
 from azure.storage.queue import QueueClient, TextBase64EncodePolicy, TextBase64DecodePolicy
 
 # Azuriteの接続文字列
-AZURITE_CONNECTION_STRING = (
-    "DefaultEndpointsProtocol=http;"
-    "AccountName=devstoreaccount1;"
-    "AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;"
-    "QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;"
-)
+# 環境変数 `AZURE_STORAGE_CONNECTION_STRING` から接続文字列を読み込みます。
+AZURITE_CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+if not AZURITE_CONNECTION_STRING:
+    raise ValueError("AZURE_STORAGE_CONNECTION_STRING environment variable must be set.")
 QUEUE_NAME = "character-action-queue"
 
 # キューサービスクライアントの作成（エンコーディングなし）
