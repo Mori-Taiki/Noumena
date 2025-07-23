@@ -23,4 +23,7 @@ cd /workspaces/Noumena
 echo "--- Installing global Node.js packages ---"
 npm install -g @google/gemini-cli
 
+echo "--- Installing GitHub CLI ---"
+apt-get update && apt-get install -y gh
+
 echo "--- Post-create setup complete ---"
