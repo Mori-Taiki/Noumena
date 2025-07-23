@@ -19,8 +19,5 @@
     "queues": {
       "messageEncoding": "none"
     }
-  },
-  "python": {
-    "pythonPath": "/workspaces/Noumena/workspaces/ai-engine/.venv/bin/python"
   }
 }
