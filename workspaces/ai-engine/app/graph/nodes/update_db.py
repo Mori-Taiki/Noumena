@@ -32,7 +32,7 @@ def update_db_node(state: CharacterState) -> CharacterState:
                     tx.run(query, character_id=character_id, content=content, thought=thought, meta_snapshot=meta_snapshot)
                     logging.info(f"Created post for character {character_id}")
                 elif command == "update_emotion":
-                    character_id = state["character_id"]
+                    character_id = params["character_id"]
                     emotion = params["emotion"]
                     value = params["value"]
                     query = (
