@@ -41,6 +41,16 @@ services:
     networks:
       - noumena_net
 
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    command: "azurite --queue --blob --loose --skipApiVersionCheck"
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+    networks:
+      - noumena_net
+
 volumes:
   neo4j_data:
 
