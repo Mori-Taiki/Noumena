@@ -5,7 +5,7 @@ from app.graph.main import app as graph_app
 
 app = func.FunctionApp()
 
-@app.queue_trigger(name="req", queue_name="character-action-queue",
+@app.queue_trigger(arg_name="req", queue_name="character-action-queue",
                   connection="AzureWebJobsStorage")
 def character_action_trigger(req: func.QueueMessage) -> None:
     logging.info('Python queue trigger function processed a queue item.')

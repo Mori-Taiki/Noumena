@@ -57,5 +57,4 @@ nunit-*.xml
 workspaces/ai-engine/.venv/
 
 # Python cache files
-workspaces/ai-engine/__pycache__/
-workspaces/ai-engine/app/graph/__pycache__/
+**/__pycache__/

@@ -22,6 +22,13 @@ def create_character(driver):
         )
         session.run(query, character_id=character_id, name=name, personality=personality, background=background, values=values, emotions=emotions, desires=desires)
         print(f"Character {name} with ID {character_id} created successfully.")
+        return character_id
+
+if __name__ == "__main__":
+    driver = GraphDatabase.driver(uri, auth=(username, password))
+    new_character_id = create_character(driver)
+    print(f"New character ID: {new_character_id}")
+    driver.close()
 
 if __name__ == "__main__":
     driver = GraphDatabase.driver(uri, auth=(username, password))
