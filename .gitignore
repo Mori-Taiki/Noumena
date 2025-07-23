@@ -52,3 +52,10 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Python virtual environment
+workspaces/ai-engine/.venv/
+
+# Python cache files
+workspaces/ai-engine/__pycache__/
+workspaces/ai-engine/app/graph/__pycache__/
