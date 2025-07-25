@@ -7,7 +7,7 @@ export default function Home() {
   const [healthStatus, setHealthStatus] = useState("checking...");
 
   useEffect(() => {
-    fetch('/api/health')
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/health`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
