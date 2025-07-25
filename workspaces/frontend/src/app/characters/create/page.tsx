@@ -28,7 +28,7 @@ export default function CreateCharacterPage() {
 
     // NOTE: This assumes the backend is running and accessible at this URL.
     // In a real setup, this would go through a proxy or an API client.
-    const apiUrl = 'http://localhost:5001/api/characters';
+    const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL + '/api/characters';
 
     try {
       const response = await fetch(apiUrl, {

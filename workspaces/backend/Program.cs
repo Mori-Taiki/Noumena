@@ -18,12 +18,12 @@ public class Program
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(name: MyAllowSpecificOrigins,
-                              policy  =>
-                              {
+                      policy =>
+                      {
                                   policy.WithOrigins("http://localhost:3000", "http://127.0.0.1:3000")
-                                        .AllowAnyHeader()
-                                        .AllowAnyMethod();
-                              });
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                      });
         });
 
         // Add services to the container.
@@ -56,7 +56,8 @@ public class Program
 
         app.MapControllers();
 
-        app.MapGet("/api/health", () => new { status = "Ok" });
+        app.MapGet("/api/health", () => new { status = "Ok" })
+           .AllowAnonymous();
 
         app.Run();
     }

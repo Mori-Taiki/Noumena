@@ -61,3 +61,6 @@ workspaces/ai-engine/.venv/
 
 # Azure Functions local settings
 workspaces/ai-engine/local.settings.json
+
+# Environment variables
+.env

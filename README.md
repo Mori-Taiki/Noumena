@@ -177,6 +177,7 @@ class CharacterState(TypedDict):
  * 目標: GitHub Codespacesを主要開発環境としてセットアップし、ワンクリックで起動可能な、本番環境を模倣したコンテナ化された開発環境を確立する。ローカルでもDockerを用いて同一環境を再現可能にする。
  * アクションアイテム:
    * リポジトリのルートに.devcontainerディレクトリを作成し、devcontainer.jsonファイルを配置する。
+   * プロジェクトルートに`.env.template`をコピーして`.env`ファイルを作成し、必要な環境変数を設定する。
    * devcontainer.json内で、プロジェクトルートにあるdocker-compose.ymlファイルを指定し、全サービス（Next.js, .NET, Python, Neo4j）が連携して起動するよう構成する。
    * 開発効率を最大化するため、推奨されるVS Code拡張機能（例: C# Dev Kit, Python, Docker, Prettier）をdevcontainer.jsonのcustomizations.vscode.extensionsに定義する。
    * GitHub上でCodespaceが正常に起動し、コンテナ化された各サービスにアクセスできることを確認する。
