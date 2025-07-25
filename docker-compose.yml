@@ -4,14 +4,14 @@ services:
     build:
       context: .
       dockerfile: .devcontainer/frontend.Dockerfile
-    command: sh -c "cd /workspace/workspaces/frontend && npm run dev"
-    
+    working_dir: /workspace/workspaces/frontend
+    command: npm run dev
     volumes:
       - .:/workspace:cached
+      - /workspace/workspaces/frontend/node_modules
     environment:
       - NEXT_PUBLIC_BACKEND_API_URL=${NEXT_PUBLIC_BACKEND_API_URL}
       - NODE_ENV=development
-      - PORT=3000
     ports:
       - "3000:3000"
     networks:
@@ -21,7 +21,8 @@ services:
     build:
       context: .
       dockerfile: .devcontainer/backend.Dockerfile
-    command: sh -c "cd /workspace/workspaces/backend && dotnet run"
+    working_dir: /workspace/workspaces/backend
+    command: dotnet run
     volumes:
       - .:/workspace:cached
     environment:
@@ -29,11 +30,15 @@ services:
       - NEO4J_USER=${NEO4J_USER}
       - NEO4J_PASSWORD=${NEO4J_PASSWORD}
       - AZURE_STORAGE_QUEUE_CONNECTION_STRING=${AZURE_STORAGE_QUEUE_CONNECTION_STRING}
-      - ALLOWED_HOSTS=${NEXT_PUBLIC_BACKEND_API_URL}
+      - AZUREADB2C_INSTANCE=${AZUREADB2C_INSTANCE}
+      - AZUREADB2C_CLIENTID=${AZUREADB2C_CLIENTID}
+      - AZUREADB2C_DOMAIN=${AZUREADB2C_DOMAIN}
+      - AZUREADB2C_SIGNUPSIGNINPOLICYID=${AZUREADB2C_SIGNUPSIGNINPOLICYID}
+      - ASPNETCORE_URLS=http://+:5001
     depends_on:
       - database
     ports:
-      - "5000:5000"
+      - "5001:5001"
     networks:
       - noumena_net
 

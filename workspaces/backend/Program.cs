@@ -10,17 +10,20 @@ namespace backend;
 public class Program
 {
     private static readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+    private const string AzureAdB2CSectionName = "AzureAdB2C";
 
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+       var allowedOrigins = (builder.Configuration.GetSection("Cors:AllowedOrigins").Value ?? "").Split(',').Select(o => o.Trim()).Where(o => !string.IsNullOrEmpty(o)).ToArray();
 
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                                  policy.WithOrigins("http://localhost:3000", "http://127.0.0.1:3000")
+                          policy.WithOrigins(allowedOrigins)
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
@@ -31,10 +34,16 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAdB2C"));
+        var azureAdB2CSection = builder.Configuration.GetSection(AzureAdB2CSectionName);
+        var useAuthentication = azureAdB2CSection.GetChildren().Any() && !string.IsNullOrEmpty(azureAdB2CSection["ClientId"]);
 
-        builder.Services.AddAuthorization();
+        if (useAuthentication)
+        {
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(azureAdB2CSection);
+
+            builder.Services.AddAuthorization();
+        }
 
         builder.Services.AddSingleton<ICharacterRepository, Neo4jCharacterRepository>();
 
@@ -51,8 +60,11 @@ public class Program
 
         app.UseCors(MyAllowSpecificOrigins);
 
-        app.UseAuthentication();
-        app.UseAuthorization();
+        if (useAuthentication)
+        {
+            app.UseAuthentication();
+            app.UseAuthorization();
+        }
 
         app.MapControllers();
 
