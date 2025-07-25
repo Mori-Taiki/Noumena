@@ -16,7 +16,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Value?.Split(',') ?? Array.Empty<string>();
+       var allowedOrigins = (builder.Configuration.GetSection("Cors:AllowedOrigins").Value ?? "").Split(',').Select(o => o.Trim()).Where(o => !string.IsNullOrEmpty(o)).ToArray();
 
         builder.Services.AddCors(options =>
         {
@@ -35,7 +35,7 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         var azureAdB2CSection = builder.Configuration.GetSection(AzureAdB2CSectionName);
-        var useAuthentication = azureAdB2CSection.Exists() && !string.IsNullOrEmpty(azureAdB2CSection["ClientId"]);
+        var useAuthentication = azureAdB2CSection.GetChildren().Any() && !string.IsNullOrEmpty(azureAdB2CSection["ClientId"]);
 
         if (useAuthentication)
         {
