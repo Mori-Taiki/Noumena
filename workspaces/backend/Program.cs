@@ -20,7 +20,7 @@ public class Program
             options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                                  policy.WithOrigins("http://localhost:3000", "http://127.0.0.1:3000")
+                                  policy.WithOrigins("http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
@@ -31,10 +31,14 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAdB2C"));
+        var azureAdB2CSection = builder.Configuration.GetSection("AzureAdB2C");
+        if (azureAdB2CSection.Exists() && !string.IsNullOrEmpty(azureAdB2CSection["ClientId"]))
+        {
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(azureAdB2CSection);
 
-        builder.Services.AddAuthorization();
+            builder.Services.AddAuthorization();
+        }
 
         builder.Services.AddSingleton<ICharacterRepository, Neo4jCharacterRepository>();
 
@@ -51,8 +55,11 @@ public class Program
 
         app.UseCors(MyAllowSpecificOrigins);
 
-        app.UseAuthentication();
-        app.UseAuthorization();
+        if (app.Configuration.GetSection("AzureAdB2C").Exists() && !string.IsNullOrEmpty(app.Configuration.GetSection("AzureAdB2C")["ClientId"]))
+        {
+            app.UseAuthentication();
+            app.UseAuthorization();
+        }
 
         app.MapControllers();
 
