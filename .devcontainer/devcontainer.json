@@ -17,13 +17,27 @@
             ]
         }
     },
-    "postCreateCommand": ".devcontainer/post-create.sh", 
+    "postCreateCommand": ".devcontainer/post-create.sh",
     "forwardPorts": [
         3000,
         5001,
         7474,
         7687
     ],
+    "portsAttributes": {
+        "3000": {
+            "label": "Frontend"
+        },
+        "5001": {
+            "label": "Backend"
+        },
+        "7474": {
+            "label": "Neo4j Browser"
+        },
+        "7687": {
+            "label": "Neo4j Bolt"
+        }
+    },
     "features": {
         "ghcr.io/devcontainers/features/docker-in-docker:2": {}
     },  
