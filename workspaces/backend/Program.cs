@@ -10,17 +10,20 @@ namespace backend;
 public class Program
 {
     private static readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+    private const string AzureAdB2CSectionName = "AzureAdB2C";
 
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Value?.Split(',') ?? Array.Empty<string>();
 
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                                  policy.WithOrigins("http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001")
+                          policy.WithOrigins(allowedOrigins)
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
@@ -31,8 +34,10 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        var azureAdB2CSection = builder.Configuration.GetSection("AzureAdB2C");
-        if (azureAdB2CSection.Exists() && !string.IsNullOrEmpty(azureAdB2CSection["ClientId"]))
+        var azureAdB2CSection = builder.Configuration.GetSection(AzureAdB2CSectionName);
+        var useAuthentication = azureAdB2CSection.Exists() && !string.IsNullOrEmpty(azureAdB2CSection["ClientId"]);
+
+        if (useAuthentication)
         {
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(azureAdB2CSection);
@@ -55,7 +60,7 @@ public class Program
 
         app.UseCors(MyAllowSpecificOrigins);
 
-        if (app.Configuration.GetSection("AzureAdB2C").Exists() && !string.IsNullOrEmpty(app.Configuration.GetSection("AzureAdB2C")["ClientId"]))
+        if (useAuthentication)
         {
             app.UseAuthentication();
             app.UseAuthorization();
