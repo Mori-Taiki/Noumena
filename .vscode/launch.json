@@ -1,0 +1,40 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Backend",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-backend",
+            "program": "${workspaceFolder}/workspaces/backend/bin/Debug/net8.0/backend.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/workspaces/backend",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "envFile": "/workspace/.env" // コンテナ内のパス
+        },
+        {
+            "name": "Next.js Frontend",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:3000", // 必要に応じて動的ポートに変更
+            "webRoot": "${workspaceFolder}/workspaces/frontend",
+            "preLaunchTask": "start-frontend"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Full Stack (Backend + Frontend)",
+            "configurations": [
+                ".NET Backend",
+                "Next.js Frontend"
+            ]
+        }
+    ]
+}

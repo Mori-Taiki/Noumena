@@ -8,7 +8,10 @@ WORKSPACE_ROOT="${containerWorkspaceFolder:-/workspace}"
 echo "--- Restoring .NET dependencies ---"
 # backendディレクトリに移動してからdotnet restoreを実行
 cd "${WORKSPACE_ROOT}/workspaces/backend" && dotnet restore
-
+echo "--- Checking and installing python3-venv if necessary ---"
+if ! dpkg -l | grep -q python3.11-venv; then
+    apt-get update -y && apt-get install -y python3.11-venv && rm -rf /var/lib/apt/lists/*
+fi
 echo "--- Restoring Node.js dependencies ---"
 # frontendディレクトリに移動してからnpm installを実行
 cd "${WORKSPACE_ROOT}/workspaces/frontend" && npm install

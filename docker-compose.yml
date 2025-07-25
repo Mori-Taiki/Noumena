@@ -38,7 +38,7 @@ services:
     depends_on:
       - database
     ports:
-      - "5001:5001"
+      - "0:5001" # Use dynamic port allocation
     networks:
       - noumena_net
 

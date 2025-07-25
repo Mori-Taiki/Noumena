@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-backend",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/workspaces/backend/backend.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            "detail": "Build the .NET backend project."
+        },
+        {
+            "label": "start-frontend",
+            "type": "npm",
+            "script": "dev",
+            "path": "workspaces/frontend/",
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "nextjs-watch",
+                "pattern": {
+                    "regexp": "^(started server on|ready in).*",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^started server on.*",
+                    "endsPattern": "^ready in.*"
+                }
+            },
+            "detail": "Start the Next.js frontend development server."
+        }
+    ]
+}
