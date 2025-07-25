@@ -31,6 +31,6 @@ npm install -g @google/gemini-cli
 
 echo "--- Installing GitHub CLI ---"
 # apt-get updateにも-yフラグを追加し、キャッシュをクリーンアップ
-apt-get update -y && apt-get install -y gh && rm -rf /var/lib/apt/lists/*
+apt-get update -y && apt-get install -y --no-install-recommends gh && rm -rf /var/lib/apt/lists/*
 
 echo "--- Post-create setup complete ---"
