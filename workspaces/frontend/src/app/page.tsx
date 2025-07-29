@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import AuthStatus from "@/components/auth/AuthStatus";
 
 export default function Home() {
   const [healthStatus, setHealthStatus] = useState("checking...");
@@ -38,6 +39,9 @@ export default function Home() {
           <p>Backend Health Check Status:</p>
           <p className="font-bold">{healthStatus}</p>
         </div>
+        
+        <AuthStatus />
+        
         <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
